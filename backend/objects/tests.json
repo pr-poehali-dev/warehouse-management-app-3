@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "GET all objects",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"objects": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

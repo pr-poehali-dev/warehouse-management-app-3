@@ -2,56 +2,11 @@ import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
 const OBJECTS = [
-  {
-    id: "OBJ-001",
-    name: "Склад №3, Москва",
-    type: "Склад",
-    status: "active",
-    address: "ул. Складская, 12",
-    events: 14,
-    lastEvent: "2 ч назад",
-    integrations: ["1C", "amoCRM"],
-  },
-  {
-    id: "OBJ-002",
-    name: "Офис — Питер",
-    type: "Офис",
-    status: "active",
-    address: "Невский пр., 88",
-    events: 7,
-    lastEvent: "вчера",
-    integrations: ["Битрикс24"],
-  },
-  {
-    id: "OBJ-003",
-    name: "Торговая точка Юг",
-    type: "Розница",
-    status: "maintenance",
-    address: "ул. Южная, 3",
-    events: 2,
-    lastEvent: "3 д назад",
-    integrations: [],
-  },
-  {
-    id: "OBJ-004",
-    name: "Производство — Тверь",
-    type: "Производство",
-    status: "active",
-    address: "Пром. зона, корпус 4",
-    events: 31,
-    lastEvent: "10 мин назад",
-    integrations: ["1C", "SAP"],
-  },
-  {
-    id: "OBJ-005",
-    name: "Склад №7, Казань",
-    type: "Склад",
-    status: "inactive",
-    address: "ул. Индустриальная, 5",
-    events: 0,
-    lastEvent: "—",
-    integrations: [],
-  },
+  { id: "OBJ-001", name: "Склад №3, Москва", type: "Склад", status: "active", address: "ул. Складская, 12", events: 14, lastEvent: "2 ч назад" },
+  { id: "OBJ-002", name: "Офис — Питер", type: "Офис", status: "active", address: "Невский пр., 88", events: 7, lastEvent: "вчера" },
+  { id: "OBJ-003", name: "Торговая точка Юг", type: "Розница", status: "maintenance", address: "ул. Южная, 3", events: 2, lastEvent: "3 д назад" },
+  { id: "OBJ-004", name: "Производство — Тверь", type: "Производство", status: "active", address: "Пром. зона, корпус 4", events: 31, lastEvent: "10 мин назад" },
+  { id: "OBJ-005", name: "Склад №7, Казань", type: "Склад", status: "inactive", address: "ул. Индустриальная, 5", events: 0, lastEvent: "—" },
 ];
 
 const EVENTS = [
@@ -61,15 +16,6 @@ const EVENTS = [
   { id: 4, objectId: "OBJ-004", objectName: "Производство — Тверь", type: "Документ", desc: "Загружен акт приёмки оборудования", user: "И. Петров", time: "вчера, 14:10", severity: "success" },
   { id: 5, objectId: "OBJ-001", objectName: "Склад №3, Москва", type: "Инцидент", desc: "Зафиксирован несанкционированный доступ", user: "Система", time: "3 д назад", severity: "error" },
   { id: 6, objectId: "OBJ-003", objectName: "Торговая точка Юг", type: "Обслуживание", desc: "Начало регламентного обслуживания СКУД", user: "Сервис-группа", time: "3 д назад", severity: "info" },
-];
-
-const INTEGRATIONS = [
-  { name: "1C:Предприятие", icon: "Database", status: "connected", objects: 2, lastSync: "5 мин назад" },
-  { name: "amoCRM", icon: "Users", status: "connected", objects: 1, lastSync: "15 мин назад" },
-  { name: "Битрикс24", icon: "LayoutGrid", status: "connected", objects: 1, lastSync: "1 ч назад" },
-  { name: "SAP ERP", icon: "Cpu", status: "connected", objects: 1, lastSync: "30 мин назад" },
-  { name: "Мой склад", icon: "Package", status: "disconnected", objects: 0, lastSync: "—" },
-  { name: "Telegram", icon: "MessageSquare", status: "disconnected", objects: 0, lastSync: "—" },
 ];
 
 const STATUS_MAP: Record<string, { label: string; color: string }> = {
@@ -85,7 +31,7 @@ const SEVERITY_MAP: Record<string, { icon: string; color: string }> = {
   success: { icon: "CheckCircle", color: "text-emerald-500" },
 };
 
-type Section = "objects" | "events" | "integrations";
+type Section = "objects" | "events";
 
 export default function Index() {
   const [section, setSection] = useState<Section>("objects");
@@ -112,7 +58,6 @@ export default function Index() {
     total: OBJECTS.length,
     active: OBJECTS.filter((o) => o.status === "active").length,
     events: EVENTS.length,
-    integrations: INTEGRATIONS.filter((i) => i.status === "connected").length,
   };
 
   return (
@@ -145,14 +90,6 @@ export default function Index() {
             <Icon name="Activity" size={15} />
             <span>События</span>
             <span className="ml-auto font-mono text-xs text-muted-foreground">{stats.events}</span>
-          </button>
-          <button
-            className={`sidebar-link ${section === "integrations" ? "active" : ""}`}
-            onClick={() => { setSection("integrations"); setSelectedObject(null); }}
-          >
-            <Icon name="Plug" size={15} />
-            <span>Интеграции</span>
-            <span className="ml-auto font-mono text-xs text-muted-foreground">{stats.integrations}</span>
           </button>
         </nav>
 
@@ -189,7 +126,6 @@ export default function Index() {
               </div>
             )}
             {section === "events" && <h1 className="text-sm font-medium">Лента событий</h1>}
-            {section === "integrations" && <h1 className="text-sm font-medium">Интеграции</h1>}
           </div>
           <div className="flex items-center gap-2">
             <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1.5 rounded-sm hover:bg-secondary">
@@ -208,12 +144,11 @@ export default function Index() {
           {/* === OBJECTS LIST === */}
           {section === "objects" && !selectedObject && (
             <div className="animate-fade-in">
-              <div className="grid grid-cols-4 gap-3 mb-6">
+              <div className="grid grid-cols-3 gap-3 mb-6">
                 {[
                   { label: "Всего объектов", value: stats.total, icon: "Building2" },
                   { label: "Активных", value: stats.active, icon: "CheckCircle2" },
                   { label: "Событий за 30 дней", value: stats.events, icon: "Activity" },
-                  { label: "Интеграций активно", value: stats.integrations, icon: "Plug" },
                 ].map((s, i) => (
                   <div key={i} className="stat-card flex items-start justify-between">
                     <div>
@@ -272,7 +207,6 @@ export default function Index() {
                       <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Статус</th>
                       <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">События</th>
                       <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Последнее событие</th>
-                      <th className="text-left text-xs text-muted-foreground font-medium px-4 py-3">Интеграции</th>
                       <th className="px-4 py-3"></th>
                     </tr>
                   </thead>
@@ -304,15 +238,6 @@ export default function Index() {
                         </td>
                         <td className="px-4 py-3">
                           <span className="text-xs text-muted-foreground">{obj.lastEvent}</span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex gap-1">
-                            {obj.integrations.length === 0 ? (
-                              <span className="text-xs text-muted-foreground">—</span>
-                            ) : obj.integrations.map((intg) => (
-                              <span key={intg} className="tag bg-secondary text-foreground">{intg}</span>
-                            ))}
-                          </div>
                         </td>
                         <td className="px-4 py-3">
                           <Icon name="ChevronRight" size={14} className="text-muted-foreground" />
@@ -369,29 +294,6 @@ export default function Index() {
                   <p className="text-xs text-muted-foreground mb-1">Последнее событие</p>
                   <p className="text-sm font-medium">{activeObj.lastEvent}</p>
                 </div>
-              </div>
-
-              <div className="bg-card border border-border rounded-sm p-4 mb-4">
-                <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Подключённые интеграции</p>
-                {activeObj.integrations.length === 0 ? (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Icon name="Plug" size={14} />
-                    <span>Нет активных интеграций</span>
-                    <button className="ml-auto text-xs underline underline-offset-2 hover:text-foreground transition-colors">Подключить</button>
-                  </div>
-                ) : (
-                  <div className="flex gap-2 flex-wrap">
-                    {activeObj.integrations.map((intg) => (
-                      <div key={intg} className="flex items-center gap-2 px-3 py-1.5 bg-secondary rounded-sm text-xs">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        {intg}
-                      </div>
-                    ))}
-                    <button className="px-3 py-1.5 border border-dashed border-border rounded-sm text-xs text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all">
-                      + Добавить
-                    </button>
-                  </div>
-                )}
               </div>
 
               <div className="bg-card border border-border rounded-sm overflow-hidden">
@@ -469,77 +371,6 @@ export default function Index() {
                     </div>
                   );
                 })}
-              </div>
-            </div>
-          )}
-
-          {/* === INTEGRATIONS === */}
-          {section === "integrations" && (
-            <div className="animate-fade-in">
-              <div className="flex items-center justify-between mb-5">
-                <p className="text-sm text-muted-foreground">Управляйте подключениями к внешним системам</p>
-                <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-foreground text-background rounded-sm hover:opacity-90 transition-opacity">
-                  <Icon name="Plus" size={13} />
-                  Подключить систему
-                </button>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
-                {INTEGRATIONS.map((intg, i) => (
-                  <div
-                    key={intg.name}
-                    className="bg-card border border-border rounded-sm p-4 hover:border-foreground/20 transition-colors"
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="w-9 h-9 bg-secondary rounded-sm flex items-center justify-center">
-                        <Icon name={intg.icon} size={16} className="text-foreground" />
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            intg.status === "connected" ? "bg-emerald-500" : "bg-gray-300"
-                          }`}
-                        ></span>
-                        <span className="text-xs text-muted-foreground">
-                          {intg.status === "connected" ? "Подключено" : "Не подключено"}
-                        </span>
-                      </div>
-                    </div>
-
-                    <h3 className="text-sm font-medium mb-0.5">{intg.name}</h3>
-                    <p className="text-xs text-muted-foreground mb-3">
-                      {intg.status === "connected"
-                        ? `${intg.objects} объект${intg.objects !== 1 ? "а" : ""} · синхр. ${intg.lastSync}`
-                        : "Интеграция не настроена"}
-                    </p>
-
-                    <button
-                      className={`w-full py-1.5 text-xs rounded-sm transition-all border ${
-                        intg.status === "connected"
-                          ? "border-border text-muted-foreground hover:text-foreground hover:bg-secondary"
-                          : "border-foreground bg-foreground text-background hover:opacity-90"
-                      }`}
-                    >
-                      {intg.status === "connected" ? "Настроить" : "Подключить"}
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 bg-card border border-border rounded-sm p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon name="Code2" size={15} />
-                  <h3 className="text-sm font-medium">API-доступ</h3>
-                </div>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Подключайте любые внешние системы через REST API. Документация и ключи доступны в разделе настроек.
-                </p>
-                <div className="flex items-center gap-2 bg-secondary rounded-sm px-3 py-2">
-                  <span className="font-mono text-xs text-muted-foreground">https://api.objectflow.ru/v1/</span>
-                  <button className="ml-auto">
-                    <Icon name="Copy" size={13} className="text-muted-foreground hover:text-foreground transition-colors" />
-                  </button>
-                </div>
               </div>
             </div>
           )}
