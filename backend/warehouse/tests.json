@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "GET warehouse items",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"items": [{"id": 1}]},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
