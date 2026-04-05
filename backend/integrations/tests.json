@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "GET integrations",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"integrations": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
